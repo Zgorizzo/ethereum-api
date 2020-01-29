@@ -1,0 +1,724 @@
+{
+  "consumes": [
+    "application/json"
+  ],
+  "host": "localhost:8000",
+  "info": {
+    "contact": {
+      "email": "bmateo@pm.me",
+      "name": "Benjamin MATEO"
+    },
+    "description": "this is a RESTful APIs in golang wrapping call to an INFURA Node.",
+    "title": "REST API.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "description": "If the API is running, an ok status will be returned",
+        "operationId": "handleRoot",
+        "responses": {
+          "200": {
+            "description": "API is running, an ok status will be returned",
+            "schema": {
+              "example": {
+                "ok": true
+              },
+              "properties": {
+                "ok": {
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            }
+          }
+        },
+        "summary": "Returns a simple json with no call to the eth client",
+        "tags": [
+          "root"
+        ]
+      }
+    },
+    "/balance/{address}": {
+      "get": {
+        "description": "If the address is found, balance will be returned\nelse Error Not Found (404) will be returned.",
+        "operationId": "handleGetBalance",
+        "parameters": [
+          {
+            "description": "a string representing the address (20 bytes) to check for balance",
+            "in": "path",
+            "name": "address",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "balance is returned",
+            "schema": {
+              "example": {
+                "balance": 2381188418352874500
+              },
+              "properties": {
+                "balance": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "404": {
+            "description": "address not found"
+          }
+        },
+        "summary": "Returns balance in wei of the given address.",
+        "tags": [
+          "balance"
+        ]
+      }
+    },
+    "/block/{hash}": {
+      "get": {
+        "operationId": "handleGetBlockByHash",
+        "parameters": [
+          {
+            "description": "a string representing the hash (32 bytes) of a block",
+            "in": "path",
+            "name": "hash",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "block is returned",
+            "schema": {
+              "$ref": "#/definitions/Block"
+            }
+          },
+          "404": {
+            "description": "block not found"
+          }
+        },
+        "summary": "Returns information about a block by hash .",
+        "tags": [
+          "block"
+        ]
+      }
+    },
+    "/block/{hash}/full": {
+      "get": {
+        "operationId": "handleGetBlockByHashfull",
+        "parameters": [
+          {
+            "description": "a string representing the hash (32 bytes) of a block",
+            "in": "path",
+            "name": "hash",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "block is returned",
+            "schema": {
+              "$ref": "#/definitions/Block"
+            }
+          },
+          "404": {
+            "description": "block not found"
+          }
+        },
+        "summary": "Returns information about a block by hash including all the transactions details contained in the block.",
+        "tags": [
+          "block"
+        ]
+      }
+    },
+    "/block/{height}": {
+      "get": {
+        "operationId": "handleGetBlockByHeight",
+        "parameters": [
+          {
+            "description": "a number representing the height of a block",
+            "in": "path",
+            "name": "height",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "block is returned",
+            "schema": {
+              "$ref": "#/definitions/Block"
+            }
+          },
+          "404": {
+            "description": "block not found"
+          }
+        },
+        "summary": "Returns information about a block by height.",
+        "tags": [
+          "block"
+        ]
+      }
+    },
+    "/block/{height}/full": {
+      "get": {
+        "operationId": "handleGetBlockByHeightfull",
+        "parameters": [
+          {
+            "description": "a number representing the height of a block",
+            "in": "path",
+            "name": "height",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "block is returned",
+            "schema": {
+              "$ref": "#/definitions/Block"
+            }
+          },
+          "404": {
+            "description": "block not found"
+          }
+        },
+        "summary": "Returns information about a block by height including all the transactions details contained in the block.",
+        "tags": [
+          "block"
+        ]
+      }
+    },
+    "/block/{height}/transaction/{id}": {
+      "get": {
+        "description": "If the transaction is found, transaction will be returned\nelse Error Not Found (404) will be returned.",
+        "operationId": "handleGetTransactionByIDInBlockHash",
+        "parameters": [
+          {
+            "description": "an integer block number",
+            "in": "path",
+            "name": "height",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "description": "an integer representing the position in the block",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "transaction is returned",
+            "schema": {
+              "$ref": "#/definitions/Transaction"
+            }
+          },
+          "404": {
+            "description": "transaction not found"
+          }
+        },
+        "summary": "Returns information about a transaction by block number and transaction index position.",
+        "tags": [
+          "block"
+        ]
+      }
+    },
+    "/block/last": {
+      "get": {
+        "operationId": "handleGetLastBlock",
+        "responses": {
+          "200": {
+            "description": "block is returned",
+            "schema": {
+              "$ref": "#/definitions/Block"
+            }
+          }
+        },
+        "summary": "Returns information about the last block.",
+        "tags": [
+          "block"
+        ]
+      }
+    },
+    "/block/last/full": {
+      "get": {
+        "description": "Returns information about the last block including all the transactions details contained in the block",
+        "operationId": "handleGetLastBlockFull",
+        "responses": {
+          "200": {
+            "description": "full block is returned",
+            "schema": {
+              "$ref": "#/definitions/Block"
+            }
+          }
+        },
+        "tags": [
+          "block"
+        ]
+      }
+    },
+    "/block/last/height": {
+      "get": {
+        "description": "Returns the last block height",
+        "operationId": "handleGetLatestBlockID",
+        "responses": {
+          "200": {
+            "description": "transaction is returned",
+            "schema": {
+              "example": {
+                "lastBlockHeight": 9206229
+              },
+              "properties": {
+                "lastBlockHeight": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
+            }
+          }
+        },
+        "tags": [
+          "block"
+        ]
+      }
+    },
+    "/call/{from}/{to}/{gas}/{value}/{data}": {
+      "get": {
+        "operationId": "handleCall",
+        "parameters": [
+          {
+            "description": "20 Bytes - The address the transaction is sent from.",
+            "in": "path",
+            "name": "from",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "20 Bytes - The address the transaction is directed to.",
+            "in": "path",
+            "name": "to",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Integer of the gas provided for the transaction execution. eth_call consumes zero gas, but this parameter may be needed by some executions.",
+            "in": "path",
+            "name": "gas",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Integer of the value sent with this transaction",
+            "in": "path",
+            "name": "value",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Hash of the method signature and encoded parameters. For details see Ethereum Contract ABI",
+            "in": "path",
+            "name": "data",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the return value of the executed contract method.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "logs not found"
+          }
+        },
+        "summary": "Executes a new message call immediately without creating a transaction on the block chain.",
+        "tags": [
+          "call"
+        ]
+      }
+    },
+    "/describe": {
+      "get": {
+        "operationId": "handleGetDescription",
+        "responses": {
+          "200": {
+            "description": "routes are returned"
+          }
+        },
+        "summary": "Returns information about the available api routes.",
+        "tags": [
+          "describe"
+        ]
+      }
+    },
+    "/gasprice": {
+      "get": {
+        "description": "Returns the current gas price in wei",
+        "operationId": "handleGetGasPrice",
+        "responses": {
+          "200": {
+            "description": "gasPrice is returned in wei",
+            "schema": {
+              "example": {
+                "gasPrice": 4000000000
+              },
+              "properties": {
+                "gasPrice": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
+            }
+          }
+        },
+        "tags": [
+          "gas"
+        ]
+      }
+    },
+    "/log/{from}/{to}/{topic}": {
+      "get": {
+        "description": "If logs are found, logs will be returned\nelse Error Not Found (404) will be returned.",
+        "operationId": "handleGetLogs",
+        "parameters": [
+          {
+            "description": "an integer block number encoded in hex, or the string \"latest\", \"earliest\" or \"pending\"",
+            "in": "path",
+            "name": "from",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "an integer block number encoded in hex, or the string \"latest\", \"earliest\" or \"pending\"",
+            "in": "path",
+            "name": "to",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Array of 32 Bytes DATA topics. Topics are order-dependent",
+            "in": "path",
+            "name": "topic",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "logs are returned",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/Log"
+              },
+              "type": "array"
+            }
+          },
+          "404": {
+            "description": "logs not found"
+          }
+        },
+        "summary": "Returns an array of all logs matching a given filter object.",
+        "tags": [
+          "log"
+        ]
+      }
+    },
+    "/transactions/{hash}": {
+      "get": {
+        "description": "If the transaction is found, transaction will be returned\nelse Error Not Found (404) will be returned.",
+        "operationId": "handleGetTransactionByHash",
+        "parameters": [
+          {
+            "description": "a string representing the hash (32 bytes) of a transaction",
+            "in": "path",
+            "name": "hash",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "transaction is returned",
+            "schema": {
+              "$ref": "#/definitions/Transaction"
+            }
+          },
+          "404": {
+            "description": "transaction not found"
+          }
+        },
+        "summary": "Returns information about a transaction for a given hash",
+        "tags": [
+          "transaction"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "Transaction": {
+      "type": "object",
+      "example": {
+        "blockHash": 1.0958656416067651e+77,
+        "blockNumber": "0x75a900",
+        "from": 9.793514962005152e+47,
+        "gas": "0x20c50",
+        "gasPrice": "0x6fc23ac00",
+        "hash": 2.528066197730631e+76,
+        "input": 3.9988107013180934e+163,
+        "nonce": "0x875a",
+        "r": 7.487612492303524e+76,
+        "s": 3.016867846703623e+76,
+        "to": 1.3742666450560211e+48,
+        "transactionIndex": "0x3",
+        "v": "0x26",
+        "value": "0x0"
+      },
+      "properties": {
+        "blockHash": {
+          "description": "32 Bytes - hash of the block where this transaction was in. null when its pending.",
+          "type": "string"
+        },
+        "blockNumber": {
+          "description": "block number where this transaction was in. null when its pending.",
+          "type": "string"
+        },
+        "from": {
+          "description": "20 Bytes - address of the sender.",
+          "type": "string"
+        },
+        "gas": {
+          "description": "gas provided by the sender..",
+          "type": "string"
+        },
+        "gasPrice": {
+          "description": "gas price provided by the sender in Wei.",
+          "type": "string"
+        },
+        "hash": {
+          "description": "32 Bytes - hash of the transaction.",
+          "type": "string"
+        },
+        "input": {
+          "description": "the data send along with the transaction.",
+          "type": "string"
+        },
+        "nonce": {
+          "description": "the number of transactions made by the sender prior to this one.",
+          "type": "string"
+        },
+        "to": {
+          "description": "20 Bytes - address of the receiver. null when its a contract creation transaction.",
+          "type": "string"
+        },
+        "transactionIndex": {
+          "description": "integer of the transactions index position in the block. null when its pending.",
+          "type": "string"
+        },
+        "value": {
+          "description": "value transferred in Wei.",
+          "type": "string"
+        }
+      }
+    },
+    "Block": {
+      "type": "object",
+      "properties": {
+        "number": {
+          "description": "the block number. Null when the returned block is the pending block.",
+          "type": "string"
+        },
+        "blockHash": {
+          "description": "32 Bytes - hash of the block. Null when the returned block is the pending block.",
+          "type": "string"
+        },
+        "parentHash": {
+          "description": "32 Bytes - hash of the parent block. ",
+          "type": "string"
+        },
+        "nonce": {
+          "description": "the number of transactions made by the sender prior to this one.",
+          "type": "string"
+        },
+        "sha3Uncles": {
+          "description": "32 Bytes - SHA3 of the uncles data in the block.",
+          "type": "string"
+        },
+        "logsBloom": {
+          "description": "256 Bytes - the bloom filter for the logs of the block. Null when the returned block is the pending block.",
+          "type": "string"
+        },
+        "transactionsRoot": {
+          "description": "32 Bytes - the root of the transaction trie of the block",
+          "type": "string"
+        },
+        "stateRoot": {
+          "description": "32 Bytes - the root of the final state trie of the block",
+          "type": "string"
+        },
+        "receiptsRoot": {
+          "description": "332 Bytes - the root of the receipts trie of the block",
+          "type": "string"
+        },
+        "miner": {
+          "description": "20 Bytes - the address of the beneficiary to whom the mining rewards were given.",
+          "type": "string"
+        },
+        "difficulty": {
+          "description": " integer of the difficulty for this block.",
+          "type": "number"
+        },
+        "totalDifficulty": {
+          "description": "integer of the total difficulty of the chain until this block.",
+          "type": "number"
+        },
+        "extraData": {
+          "description": " the extra data field of this block.",
+          "type": "string"
+        },
+        "size": {
+          "description": "integer the size of this block in bytes.",
+          "type": "number"
+        },
+        "gasLimit": {
+          "description": " the maximum gas allowed in this block",
+          "type": "string"
+        },
+        "gasUsed": {
+          "description": "the total used gas by all transactions in this block.",
+          "type": "string"
+        },
+        "timestamp": {
+          "description": "the unix timestamp for when the block was collated.",
+          "type": "string"
+        },
+        "transactions": {
+          "description": "Array - Array of transaction objects, or 32 Bytes transaction hashes depending on the last given parameter.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "uncles": {
+          "description": "an Array of uncle hashes.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "example": {
+        "number": "0x176c8c",
+        "hash": "0x33ecccb2c56744c51a128e27377a90eefc0a3b662ebea67473438e17160b2455",
+        "parentHash": "0xb825c19e6b27d2794788a73f532fd576a08353e83eb45e88024d95343cf0a0c2",
+        "sha3Uncles": "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
+        "logsBloom": "0x00000000000000020000000000020000000000000000000000000000000080000001000000000000000000000400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000080000000001000000000000000000000000000000000000000000000000000000000002000040000000000000000000000040000000000000000000000000040000000000000000000000000000000001000000000000000000000000000000000000000000000",
+        "transactionsRoot": "0x43eb12af3838ad9d0e28a84c933e45025ed92fb8d5bfb75fde7dde83c42aeb0e",
+        "stateRoot": "0x48c0294e4fb33c75abfdc7795aaacae5058ed65e0bdf303f19bbd4b8f49ae620",
+        "receiptsRoot": "0xa93e0d10cabf74651ecd251bdf1591f2d88551d25e8b56a056fd6546bc9ab3e5",
+        "miner": "0xf8b483dba2c3b7176a3da549ad41a48bb3121069",
+        "difficulty": "0x216a065ce011",
+        "totalDifficulty": "0x117d06fabc99fe8e7",
+        "extraData": "0xd983010305844765746887676f312e342e328777696e646f7773",
+        "size": "0x2495",
+        "gasLimit": "0x47e7c4",
+        "gasUsed": "0x234e56",
+        "timestamp": "0x573b5b0a",
+        "transactions": [
+          "0x22dc964433285799e68c98dd2337593c2e19d183abd2ac9f968c05e53b5119d7",
+          "0xf2d25ff80cd30d40d36136697f22f54bbd2b346e1525f87aa0f835409cce930e",
+          "0xf6a739be5a6ccd4f97157b918592a37dbbf3dc45bcd62a6fb562157ebc8b83c0",
+          "0x227cf5b5ef1a28b3464dcc10b04a50e6091c725a1af4c0ab6af11b15dbc01e74",
+          "0x53565058db766bedb90b777302f63896e842c80b4c9c41acd185bc75f3685c13",
+          "0xac374b1b7e611599a680d366a0814a5740682a817e120f4685126b87f22986af",
+          "0xa9c614e9d62a930ab40c5df8f143f20b8bf0fb9582ebeae9c6f1d16e2f4ae8f7",
+          "0x4130d38aef20da1e31a47aea7e4f845af557cc2c54c3cf732a5d10179faab755",
+          "0x279625faa527332f0b20f9795d59726f984249fde6426040a064b51c54407f63",
+          "0x057edf3d84f26639809cd4363bc2516ece19057c8501e4a311fbc395d732c5b0",
+          "0x7d6672d8d3925fd1da9a0c356e3c5d2bcc96135b337399760fbb044ec4fa82e7",
+          "0x847fb86ab8df672e28fdddacc5665577e034af5790cb5a120d286494a7f3d4c7",
+          "0x2cc2b90c61c0fb9e13138018051bd180edaa3ec2d6bf6530ccfc6cfb72002cd4",
+          "0xc624b5268fbfe65293e93281a33dfcad1201c159ab350535521b885ea5eb2958",
+          "0xffda3a64ee0d6a78e675ad1c2a8cf68eef871400ab32702331cd28c090f6a822"
+        ],
+        "uncles": [],
+        "nonce": "0x53d3ca980483d36e",
+        "mixHash": "0xdde21058c62fb8522fc949d70e64fb573ecfa49ef90e7668085293b8db6f901e"
+      }
+    },
+    "Log": {
+      "type": "object",
+      "properties": {
+        "removed": {
+          "description": "true when the log was removed, due to a chain reorganization. false if it's a valid log.",
+          "type": "string"
+        },
+        "logIndex": {
+          "description": "integer of the log index position in the block. null when its pending log.",
+          "type": "string"
+        },
+        "transactionIndex": {
+          "description": "integer of the transactions index position log was created from. null when its pending log.",
+          "type": "string"
+        },
+        "transactionHash": {
+          "description": "32 Bytes - hash of the transactions this log was created from. null when its pending log.",
+          "type": "string"
+        },
+        "blockHash": {
+          "description": "32 Bytes - hash of the block where this log was in. null when its pending. null when its pending log.",
+          "type": "string"
+        },
+        "blockNumber": {
+          "description": "the block number where this log was in. null when its pending. null when its pending log.",
+          "type": "string"
+        },
+        "address": {
+          "description": "20 Bytes - address from which this log originated.",
+          "type": "string"
+        },
+        "data": {
+          "description": "contains one or more 32 Bytes non-indexed arguments of the log.",
+          "type": "string"
+        },
+        "topics": {
+          "description": "Array of 0 to 4 32 Bytes of indexed log arguments. (In solidity - The first topic is the hash of the signature of the event (e.g. Deposit(address,bytes32,uint256)), except you declared the event with the anonymous specifier.)",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "example": {
+        "removed": false,
+        "logIndex": "0x0",
+        "transactionIndex": "0x2",
+        "transactionHash": "0xfcb2e27aae85b62354cd87f918affe1e117c64c610f2460286d9ea3dc69d5103",
+        "blockHash": "0xa02d37e31c253537aaa1b895f568ff4cce4c1cd4a2107265884a908d43ba24cf",
+        "blockNumber": "0x8b6492",
+        "address": "0x1c040c4ab9acce984d0d4c135576598013950e52",
+        "data": "0x000000000000000000000000000000000000000000000161c247a75c0e9a0000",
+        "topics": [
+          "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+          "0x000000000000000000000000923dfd9f48efb92538a95e2f9f62c6ddaa74ff6e",
+          "0x000000000000000000000000ecfe1930ffe9f5828a9aba39276a44d18b2e9aa3"
+        ]
+      }
+    }
+  },
+  "produces": [
+    "application/json"
+  ],
+  "schemes": [
+    "http"
+  ],
+  "swagger": "2.0"
+}

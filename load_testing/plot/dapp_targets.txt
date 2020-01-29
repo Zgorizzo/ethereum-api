@@ -1,0 +1,12 @@
+GET http://localhost:8000/gasprice
+GET http://localhost:8000/balance/0x4340ac786edF408a0C8e9a2505727CDe8C17AC51
+GET http://localhost:8000/balance/0xD552119eD44EC8Fa8f87c568769C67Bd02B5b3FB
+GET http://localhost:8000/balance/0x12c2d006F5471bbd71a694d14a47aCC326BA3037
+GET http://localhost:8000/balance/0x5cf2CBfd110E7Ce39fb353d123776Ab683ef9fEB
+GET http://localhost:8000/log/0x8B6492/0x8B649C/0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef
+GET http://localhost:8000/call/0x5cf2cefd110e7ce39fb353d123776ab683ef9fee/0xe530441f4f73bDB6DC2fA5aF7c3fC5fD551Ec838/30400/0/0x70a082310000000000000000000000005cf2cbfd110e7ce39fb353d123776ab683ef9feb
+GET http://localhost:8000/block/last/full
+GET http://localhost:8000/block/last/height
+GET http://localhost:8000/transaction/0xd2a9df344f0e92fa89bc1f05fa3a7ce77a1f6369a8b1b6fa75429909dbe0cf17
+GET http://localhost:8000/transaction/0x5c4a3e7378dd429d9dec52191028dd7d58d2ca0ac0864c6b33de5fa87f95b1f9
+GET http://localhost:8000/transaction/0xd521b6af3c872f3aabc87619da457d8cd864854c37c2ecff6546f345cfa0707d
